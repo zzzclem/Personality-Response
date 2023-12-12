@@ -1,0 +1,110 @@
+import random
+
+
+class ChatbotPersonality:
+    def __init__(self, initial_emotion):
+        self.emotion = initial_emotion
+
+    def get_personality(self):
+        if self.emotion in ["happy", "excited","1","2"]:
+            return "positive"
+        elif self.emotion in ["sad", "lost","3","4"]:
+            return "negative"
+        elif self.emotion in ["boredom","jokes","5","6"]:
+            return "entertainment"
+        else:
+            return "neutral"
+
+
+class EmotionsChatbot:
+    def __init__(self, personality):
+        self.personality = personality
+        self.history = []
+
+    def get_response(self, user_input):
+        responses = {
+            "positive": ["Shine bright like a diamond!","Every cloud has a silver lining.", "Spread love everywhere you go. Let no one ever come to you without leaving happier. - Mother Teresa", "Life is what happens when you're busy making other plans. - John Lennon", "The only way to do great work is to love what you do. - Steve Jobs",  "You are a work of art. Don't let anyone dull your colors.", "Don't count the days, make the days count. - Muhammad Ali",
+                         "In every day, there are 1,440 minutes. That means we have 1,440 daily opportunities to make a positive impact. - Les Brown","The best way to predict the future is to create it. - Peter Drucker","Believe you can and you're halfway there. - Theodore Roosevelt",
+                         "Every morning brings new potential, but only if you make the most of it. - Harvey Mackay","Keep your face always toward the sunshine—and shadows will fall behind you. - Walt Whitman", "The more you praise and celebrate your life, the more there is in life to celebrate. - Oprah Winfrey", "You are never too old to set another goal or to dream a new dream. - C.S. Lewis", "Your time is limited, don't waste it living someone else's life. - Steve Jobs","You've got a friend in me. - Randy Newman (Toy Story)", "Don't worry, be happy. - Bobby McFerrin","Good vibes only!","See the good in all things.","You're a star, shining in your own way!",
+                         "You are the master of your fate, the captain of your soul. - Invictus, William Ernest Henley","You're braver than you believe and stronger than you seem. - A.A. Milne (Winnie the Pooh)","Radiate positivity like the sun radiates light.", "Life is a journey that must be traveled no matter how bad the roads and accommodations. - Oliver Goldsmith"],
+            "negative": ["This is not going well at all.","I'm feeling quite frustrated about that.", "Why does everything have to be so challenging?",  "I'm not in the mood for this negativity.",
+                         "Sometimes life just doesn't make sense.",  "Why does it seem like everything is falling apart?", "Feeling a bit down today.", "I can't believe this is happening.","Nothing seems to be going right.", "I'm feeling quite disappointed right now.", "Why does everything have to be so complicated?",
+                         "Feeling overwhelmed with negativity.","I wish things were different.","I'm not happy with the way things are going.","This is just not my day.","Feeling a bit defeated.","Why do bad things always happen to me?",
+                         "I'm feeling quite upset about that.","Sometimes life just throws too many curveballs.","I just can't catch a break today.", "Feeling a bit hopeless right now.", "Why can't things be easier?", "I'm not in the mood for any more bad news.","This situation is really getting on my nerves.", "Feeling quite discouraged.",  "I just want things to get better.","Why is everything so stressful?","Feeling a bit disheartened.", "I'm not happy with the way things turned out."],
+            "entertainment": ["Why don't scientists trust atoms? Because they make up everything!", "I told my computer I needed a break, and now it won't stop sending me vacation ads.","Why did the coffee file a police report? It got mugged!","Did you hear about the mathematician who’s afraid of negative numbers? He’ll stop at nothing to avoid them!",
+                "Why don't skeletons fight each other? They don't have the guts.", "I'm reading a book on anti-gravity. It's impossible to put down!", "I used to play piano by ear, but now I use my hands and fingers.", "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+                "What's orange and sounds like a parrot? A carrot!","I asked the librarian if the library had any books on paranoia. She whispered, 'They're right behind you.'","I'm reading a book about anti-gravity. It's uplifting!","Why did the scarecrow win an award? Because he was outstanding in his field!","I'm on a whiskey diet. I've lost three days already!",
+                "Why don't scientists trust genetics? Because it runs in their genes!", "What did the janitor say when he jumped out of the closet? Supplies!", "I'm writing a book on reverse psychology. Please don't read it.","I told my wife she should embrace her mistakes. She gave me a hug.", "I used to play piano by ear, but now I use my hands and fingers.", "I used to be a baker because I kneaded dough.",
+                "Why don't skeletons go to scary movies? They don't have the guts!","I'm reading a book about anti-gravity. It's impossible to put down!", "I told my computer I needed a break, and now it won't stop sending me vacation ads.","Why don't some couples go to the gym? Because some relationships don't work out!"],
+        }
+
+        if self.personality in responses:  # Check if the personality is in the responses dictionary
+            return random.choice(responses[self.personality])
+        else:
+            return "I don't understand your personality."
+
+
+def reset_personality(chatbot, user_emotion):
+    reset_keywords = ["stop", "enough", "nope"]
+    print("Current MOOD:", chatbot.personality.capitalize())
+
+    while True:
+        reset_input = input(
+            ''' Switch new EMOTIONS= 
+        1) Happy, 2) Excited, 3) Sad, 4) Lost, 5) Boredom, 6) Jokes 
+                or 
+            Type 'back' to go back the initial emotion:   ''').lower()
+
+        if reset_input in ["happy", "excited", "sad", "lost", "boredom", "jokes", "1","2","3","4","5","6"]:
+            chatbot.personality = ChatbotPersonality(reset_input).get_personality()
+            print(f"Personality switched to {reset_input.capitalize()}.")
+            break
+        elif reset_input == "back":
+            chatbot.personality = ChatbotPersonality(user_emotion).get_personality()
+            print(f"Personality reset to {user_emotion.capitalize()}.")
+            break
+        elif reset_input in reset_keywords:
+            print("Personality remains unchanged.")
+            break
+        else:
+            print("Invalid input. Please enter a valid emotion or type 'back' to go back.")
+
+
+def main():
+    # Ask the user to choose their current emotion
+    user_emotion = input('''I am a Personality ADVISOR :)
+May I know WHAT are you FEELING right now !?!?
+
+Options =                                                           | Reset keywords = < stop, enough, nope > |
+<  (1)Happy, (2)Excited, (3)Sad,                                    | Exit = < bye, exit, ciao, goodbye... >  |
+                          (4)Lost, (5)Boredom, (6)Jokes  >          
+                
+    I am feeling: ''').lower()
+
+    # Create the chatbot based on the selected personality
+    chatbot = EmotionsChatbot(personality=ChatbotPersonality(user_emotion).get_personality())
+
+    # User interaction loop
+    while True:
+        user_input = input("[ENTER]:  ")
+        print("Mood is","'", chatbot.personality.capitalize(),"'")
+
+        # Check if the user wants to reset the personality
+        if user_input.lower() in ["stop", "enough", "nope"]:
+            reset_personality(chatbot, user_emotion)
+            continue # Skip the rest of the loop and start over
+
+        # Exit the loop if the user types "exit"
+        if user_input.lower() in ["exit", "goodbye", "bye", "ciao"]:
+            print("Goodbye! Hope now you're feeling Alright!!:)")
+            break
+
+        # Get the chatbot's response
+        bot_response = chatbot.get_response(user_input)
+
+        # Print the chatbot's response
+        print("Swift Responses= ", bot_response)
+
+
+if __name__ == "__main__":
+    main()
